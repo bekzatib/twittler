@@ -8,7 +8,10 @@
   <body>
     <H1>Barker</H1>
     <button class="refresh">Refresh Tweets</button>
+    <h2>Timelines</h2>
     <ul id ="users"></u1>
+    <div></div>
+    <h2>Barks</h2>
     <ul id ="tweets"></ul>
     <script>
       $(document).ready(function(){
@@ -18,7 +21,7 @@
         //User timeline selection
         $userList = $('#users');
         for (var i = 0; i < users.length; i++) {
-          var $user = $('<li class="user"></li>');
+          var $user = $('<button class="user"></button>');
           $user.text(users[i]);
           $userList.prepend($user);
         }
@@ -52,7 +55,7 @@
           $tweetBody.html('');
           for (var i = 0; i < streams.home.length; i++) {
             var tweet = streams.home[i];
-            if (tweet.user = name) {
+            if (tweet.user === name) {
               var $tweet = $('<div></div>');
               $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
               $tweetBody.prepend($tweet);
