@@ -6,27 +6,27 @@
   </head>
   <title>Barker</title>
   <body>
-    
+    <button class="refresh">Refresh Tweets</button>
+    <ul id ="tweets"></ul>
     <script>
       $(document).ready(function(){
-        var $body = $('body');
+        var $tweetBody = $('#tweets');
         //$body.html('');
 
-        var stop = 0;
+        streams.lastRead = 0;
         var updateTweets = function() {
-          var index = streams.home.length - 1;
-          streams.lastRead = index;
-          while(index >= stop){
+          var index = streams.lastRead;
+          streams.lastRead = streams.home.length;
+          while(index < streams.home.length){
             var tweet = streams.home[index];
             var $tweet = $('<div></div>');
 
             if (tweet !== undefined) {
               $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
-              $tweet.prependTo($body);
-              index -= 1;
+              $tweet.prependTo($tweetBody);
+              index += 1;
             }
           }
-          stop = streams.lastRead;
           //setTimeout(updateTweets, 5000);
         }
         updateTweets();
@@ -36,6 +36,5 @@
 
       });
     </script>
-    <button class="refresh">Refresh Tweets</button>
   </body>
 </html>
