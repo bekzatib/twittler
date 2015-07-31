@@ -4,24 +4,38 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
   </head>
+  <title>Barker</title>
   <body>
+    
     <script>
-
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
+        //$body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+        var stop = 0;
+        var updateTweets = function() {
+          var index = streams.home.length - 1;
+          streams.lastRead = index;
+          while(index >= stop){
+            var tweet = streams.home[index];
+            var $tweet = $('<div></div>');
+
+            if (tweet !== undefined) {
+              $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
+              $tweet.prependTo($body);
+              index -= 1;
+            }
+          }
+          stop = streams.lastRead;
+          //setTimeout(updateTweets, 5000);
         }
+        updateTweets();
+        $('.refresh').on('click', function() {
+          updateTweets();
+        });
 
       });
-
     </script>
+    <button class="refresh">Refresh Tweets</button>
   </body>
 </html>
