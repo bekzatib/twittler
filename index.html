@@ -6,13 +6,25 @@
   </head>
   <title>Barker</title>
   <body>
+    <H1>Barker</H1>
     <button class="refresh">Refresh Tweets</button>
+    <ul id ="users"></u1>
     <ul id ="tweets"></ul>
     <script>
       $(document).ready(function(){
         var $tweetBody = $('#tweets');
         //$body.html('');
 
+        //User timeline selection
+        $userList = $('#users');
+        for (var i = 0; i < users.length; i++) {
+          var $user = $('<li class="user"></li>');
+          $user.text(users[i]);
+          $userList.prepend($user);
+        }
+        $userList.prepend($('<button class="home">Home</button>'))
+
+        //Loeading tweets here
         streams.lastRead = 0;
         var updateTweets = function() {
           var index = streams.lastRead;
@@ -23,17 +35,35 @@
 
             if (tweet !== undefined) {
               $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
-              $tweet.prependTo($tweetBody);
+              $tweetBody.prepend($tweet);
               index += 1;
             }
           }
           //setTimeout(updateTweets, 5000);
         }
         updateTweets();
+
+        //Event listeners
         $('.refresh').on('click', function() {
           updateTweets();
         });
-
+        $('.user').on('click', function() {
+          var name = $(this).text();
+          $tweetBody.html('');
+          for (var i = 0; i < streams.home.length; i++) {
+            var tweet = streams.home[i];
+            if (tweet.user = name) {
+              var $tweet = $('<div></div>');
+              $tweet.text('[' +  tweet.created_at + '] @' + tweet.user + ': ' + tweet.message);
+              $tweetBody.prepend($tweet);
+            }
+          }
+        });
+        $('.home').on('click', function() {
+          $tweetBody.html('');
+          streams.lastRead = 0;
+          updateTweets();
+        });
       });
     </script>
   </body>
